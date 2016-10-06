@@ -7,7 +7,8 @@ sed -i "s%\${JAVA_HOME}%${JAVA_HOME}%" ${HADOOP_HOME}/etc/hadoop/hadoop-env.sh
 if [ "$1" = 'start' ]; then
   $HADOOP_HOME/sbin/start-dfs.sh
   if [ -d /usr/share/mist ]; then
-    ${HADOOP_HOME}/bin/hadoop fs -put /usr/share/mist/target/scala-*/mist_examples_*.jar /
+    ${HADOOP_HOME}/bin/hadoop fs -put /usr/share/mist/examples/target/scala-*/mist_examples_*.jar /
+    ${HADOOP_HOME}/bin/hadoop fs -put /usr/share/mist/src/test/python/simple_spark_context.py /
   fi
   ${HADOOP_HOME}/bin/hadoop fs -ls /
   export lastLog=`ls -t ${HADOOP_HOME}/logs/hadoop-root-namenode-*.log | head -1`
