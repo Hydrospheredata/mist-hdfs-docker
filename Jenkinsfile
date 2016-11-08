@@ -18,6 +18,11 @@ node {
         }
       }
     }
+    emailext (
+      subject: 'project builded',
+      body: "project builded is here: ${env.BUILD_URL}",
+      recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+    )
   }
   catch (err) {
     currentBuild.result = "FAILURE"
