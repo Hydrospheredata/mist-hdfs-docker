@@ -1,18 +1,26 @@
-node 
-{
-    stage 'clone projet'
-    checkout scm
-    stage 'build and test with new branch1'
-    parallel ( failFast: false,
-        Spark_1_5_2: { test_platform("1.5.2") },
-        Spark_1_6_2: { test_platform("1.6.2") },
-        Spark_2_0_0: { test_platform("2.0.0") },
-    )
-}
-
-def test_platform(sparkVersion)
-{
-  echo 'build ' + sparkVersion
-  echo 'prepare ' + sparkVersion
-  echo 'test ' + sparkVersion
+node {
+  currentBuild.result = "SUCCESS"
+  
+  try {
+    stage('clone project') {
+      checkout scm
+    }
+    stage('build hdfs container') {
+      docker.withRegistry('https://hub.docker.com/', '2276974e-852b-45ab-bf14-9136e1b31217') {
+        def pcImg 
+        pcImg = docker.build("hydrosphere/hdfs:latest")
+        pcImg.push();
+      }
+    }
+  }
+  catch (err) {
+    currentBuild.result = "FAILURE"
+    echo "${err}"
+    mail body: "project build error is here: ${env.BUILD_URL}" ,
+        from: 'hydro-support@provectus.com',
+        replyTo: 'noreply@provectus.com',
+        subject: 'project build failed',
+        to: "peanig@gmail.com"
+    throw err
+  }
 }
