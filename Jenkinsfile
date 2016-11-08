@@ -18,10 +18,11 @@ node {
         }
       }
     }
+    gitEmail = sh(returnStdout: true, script: "git --no-pager show -s --format='%ae' HEAD").trim()
     emailext (
       subject: 'project builded',
       body: "project builded is here: ${env.BUILD_URL}",
-      recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+      to: gitEmail
     )
   }
   catch (err) {
