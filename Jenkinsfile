@@ -6,7 +6,7 @@ node {
       checkout scm
     }
     stage('build hdfs container') {
-      docker.withRegistry('index.docker.io', '2276974e-852b-45ab-bf14-9136e1b31217') {
+      docker.withRegistry('https://index.docker.io/v1/', '2276974e-852b-45ab-bf14-9136e1b31217') {
         def pcImg 
         pcImg = docker.build("hydrosphere/hdfs:latest")
         pcImg.push();
