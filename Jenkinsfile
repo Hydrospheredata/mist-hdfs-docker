@@ -6,12 +6,13 @@ node {
     }
     stage('build hdfs container') {
       docker.withRegistry('https://index.docker.io/v1/', '2276974e-852b-45ab-bf14-9136e1b31217') {
-        def pcImg
-        echo "branch - ${env.GIT_BRANCH}"
-        if ( env.GIT_BRANCH == 'master') {
+        tokens = "${env.JOB_NAME}".tokenize('/')
+        branch = tokens[tokens.size()-1]
+        echo "branch - ${branch}"
+        if ( branch == 'master') {
           pcImg = docker.build("hydrosphere/hdfs:latest")
         } else {
-          pcImg = docker.build("hydrosphere/hdfs:${env.GIT_BRANCH}")
+          pcImg = docker.build("hydrosphere/hdfs:${branch}")
         }
         pcImg.push();
       }
