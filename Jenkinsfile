@@ -22,11 +22,11 @@ node {
   catch (err) {
     currentBuild.result = "FAILURE"
     echo "${err}"
-    mail body: "project build error is here: ${env.BUILD_URL}" ,
-        from: 'hydro-support@provectus.com',
-        replyTo: 'noreply@provectus.com',
-        subject: 'project build failed',
-        to: "peanig@gmail.com"
+    emailext (
+      subject: 'project build failed',
+      body: "project build error is here: ${env.BUILD_URL}",
+      recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+    )
     throw err
   }
 }
