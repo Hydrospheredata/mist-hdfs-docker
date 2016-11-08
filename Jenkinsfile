@@ -19,20 +19,21 @@ node {
       }
     }
     gitEmail = sh(returnStdout: true, script: "git --no-pager show -s --format='%ae' HEAD").trim()
-    emailext (
-      subject: 'project builded',
-      body: "project builded is here: ${env.BUILD_URL}",
-      to: gitEmail
-    )
+    mail body: "project build error is here: ${env.BUILD_URL}" ,
+        from: 'hydro-support@provectus.com',
+        replyTo: 'noreply@provectus.com',
+        subject: 'project build failed',
+        to: gitEmail
   }
   catch (err) {
     currentBuild.result = "FAILURE"
     echo "${err}"
-    emailext (
-      subject: 'project build failed',
-      body: "project build error is here: ${env.BUILD_URL}",
-      recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-    )
+    gitEmail = sh(returnStdout: true, script: "git --no-pager show -s --format='%ae' HEAD").trim()
+    mail body: "project build error is here: ${env.BUILD_URL}" ,
+        from: 'hydro-support@provectus.com',
+        replyTo: 'noreply@provectus.com',
+        subject: 'project build failed',
+        to: gitEmail
     throw err
   }
 }
