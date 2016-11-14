@@ -11,5 +11,3 @@ docker run -d hydroshpere/hdfs:latest start
 ```
 docker build -t hydrosphere/hdfs:latest .
 ```
-
-## Use
