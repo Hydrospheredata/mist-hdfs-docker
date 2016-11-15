@@ -1,5 +1,4 @@
-#FROM frolvlad/alpine-oraclejdk8:slim
-FROM hurma
+FROM frolvlad/alpine-oraclejdk8:slim
 
 ARG HADOOP_VERSION
 
