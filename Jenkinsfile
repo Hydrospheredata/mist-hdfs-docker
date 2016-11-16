@@ -9,7 +9,11 @@ node {
         def branch = env.BRANCH_NAME
         echo "branch - ${branch}"
         def tag = sh(returnStdout: true, script: "git tag -l --contains HEAD").trim()
-        echo "tag - ${tag}"
+        if (tag == '') {
+          echo "tag not found"
+        } else {
+          echo "tag - ${tag}"
+        }
         if ( branch == 'master') {
           pcImg = docker.build("hydrosphere/hdfs:latest")
           pcImg.push()
