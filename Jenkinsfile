@@ -8,7 +8,8 @@ node {
       docker.withRegistry('https://index.docker.io/v1/', '2276974e-852b-45ab-bf14-9136e1b31217') {
         def branch = env.BRANCH_NAME
         echo "branch - ${branch}"
-        echo "tag - ${env.TAG_NAME}"
+        def tag = sh(returnStdout: true, script: "git tag -l --contains HEAD").trim()
+        echo "tag - ${tag}"
         if ( branch == 'master') {
           pcImg = docker.build("hydrosphere/hdfs:latest")
           pcImg.push()
