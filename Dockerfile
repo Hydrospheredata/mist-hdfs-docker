@@ -21,8 +21,8 @@ RUN apk update && \
     tar zxvf hadoop-${HADOOP_VERSION}.tar.gz  && \
     mv hadoop-${HADOOP_VERSION} ${HADOOP_HOME}
 
-COPY docker-app/hdfs-assets/*.xml ${HADOOP_HOME}/etc/hadoop/
-COPY docker-app/hdfs-assets/entrypoint.sh /
+COPY *.xml ${HADOOP_HOME}/etc/hadoop/
+COPY entrypoint.sh /
 
 RUN sed -i "s%<HADOOP_HOME>%${HADOOP_HOME}%" ${HADOOP_HOME}/etc/hadoop/*.xml && \
     chmod +x /entrypoint.sh && \
